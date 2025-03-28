@@ -1,0 +1,14 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 600627364901.dkr.ecr.us-east-2.amazonaws.com/frontend
+  build:
+    commands:
+      - docker build -t myapp-frontend .
+      - docker tag myapp-frontend:latest 600627364901.dkr.ecr.us-east-2.amazonaws.com/frontend:latest
+  post_build:
+    commands:
+      - docker push 600627364901.dkr.ecr.us-east-2.amazonaws.com/frontend:latest
